@@ -32,8 +32,8 @@ class MainViewModel : ViewModel() {
 
     private fun getAsteroids() {
         viewModelScope.launch {
-            AsteroidApiStatus.LOADING
             try {
+                _status.value= AsteroidApiStatus.LOADING
                 val calendar = Calendar.getInstance()
                 val today = formatDate(calendar.time)
                 calendar.add(Calendar.DAY_OF_YEAR, 7)
@@ -44,12 +44,12 @@ class MainViewModel : ViewModel() {
                 Timber.i("IOD Class: ${iodResponse.javaClass}")
                 Timber.v("url: ${iodResponse.asDomainModel()}")
                 _iod.value = iodResponse.asDomainModel()
-                _status.value = AsteroidApiStatus.DONE
                 val listResult = asteroidsResponse.asDomainModel()
                 if (listResult.isNotEmpty()) {
                     _asteroids.value = listResult
                     Timber.i("got ${listResult.size} items")
                 }
+                _status.value = AsteroidApiStatus.DONE
             } catch (e: Exception) {
                 Timber.e("Failure getting Asteroid Properties: $e")
                 _status.value = AsteroidApiStatus.ERROR
