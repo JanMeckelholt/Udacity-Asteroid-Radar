@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,9 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+        binding.asteroidRecycler.adapter = AsteroidListAdatper(AsteroidListAdatper.OnClickListener{
+            Toast.makeText(requireContext(), "Clicked on ${it.codename}", Toast.LENGTH_LONG).show()
+        })
         viewModel.status.observe(viewLifecycleOwner, Observer {
             if (it == AsteroidApiStatus.LOADING) {
                 binding.statusLoadingWheel.visibility = View.VISIBLE
