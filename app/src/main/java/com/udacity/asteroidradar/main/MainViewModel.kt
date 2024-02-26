@@ -23,6 +23,9 @@ class MainViewModel : ViewModel() {
     val asteroids: LiveData<List<Asteroid>?>
         get() = _asteroids
 
+    private val _iod = MutableLiveData<String?>()
+    val IOD: LiveData<String?>
+        get() = _iod
     init {
         getAsteroids()
     }
@@ -33,16 +36,14 @@ class MainViewModel : ViewModel() {
             try {
                 val calendar = Calendar.getInstance()
                 val today = formatDate(calendar.time)
-                calendar.add(Calendar.DAY_OF_YEAR, -7)
-                val sevenDaysAgo = formatDate(calendar.time)
-                val asteroidsResponse = AsteroidApi.retrofitService.getAsteroids(startDate = sevenDaysAgo, endDate = today )
+                calendar.add(Calendar.DAY_OF_YEAR, 7)
+                val inSevenDays = formatDate(calendar.time)
+                val asteroidsResponse = AsteroidApi.retrofitService.getAsteroids(startDate = inSevenDays, endDate = today )
                 val iodResponse = AsteroidApi.retrofitService.getIOD()
                 Timber.i("Asteroids Class: ${asteroidsResponse.javaClass}")
-                //Timber.v("Asteroids Resp: $asteroidsResponse")
                 Timber.i("IOD Class: ${iodResponse.javaClass}")
-                //Timber.v("IOD Resp: $iodResponse")
-
                 Timber.v("url: ${iodResponse.asDomainModel()}")
+                _iod.value = iodResponse.asDomainModel()
                 _status.value = AsteroidApiStatus.DONE
                 val listResult = asteroidsResponse.asDomainModel()
                 if (listResult.isNotEmpty()) {
