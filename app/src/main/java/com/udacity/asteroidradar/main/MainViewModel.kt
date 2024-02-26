@@ -1,6 +1,61 @@
 package com.udacity.asteroidradar.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.asDomainModel
+import com.udacity.asteroidradar.api.formatDate
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.lang.Exception
+import java.util.Calendar
 
+enum class AsteroidApiStatus { LOADING, ERROR, DONE }
 class MainViewModel : ViewModel() {
+    private val _status = MutableLiveData<AsteroidApiStatus>()
+    val status: LiveData<AsteroidApiStatus>
+        get() = _status
+
+    private val _asteroids = MutableLiveData<List<Asteroid>?>()
+    val asteroids: LiveData<List<Asteroid>?>
+        get() = _asteroids
+
+    init {
+        getAsteroids()
+    }
+
+    private fun getAsteroids() {
+        viewModelScope.launch {
+            AsteroidApiStatus.LOADING
+            try {
+                val calendar = Calendar.getInstance()
+                val today = formatDate(calendar.time)
+                calendar.add(Calendar.DAY_OF_YEAR, -7)
+                val sevenDaysAgo = formatDate(calendar.time)
+                val asteroidsResponse = AsteroidApi.retrofitService.getAsteroids(startDate = sevenDaysAgo, endDate = today )
+                val iodResponse = AsteroidApi.retrofitService.getIOD()
+                Timber.i("Asteroids Class: ${asteroidsResponse.javaClass}")
+                //Timber.v("Asteroids Resp: $asteroidsResponse")
+                Timber.i("IOD Class: ${iodResponse.javaClass}")
+                //Timber.v("IOD Resp: $iodResponse")
+
+                Timber.v("url: ${iodResponse.asDomainModel()}")
+                _status.value = AsteroidApiStatus.DONE
+                val listResult = asteroidsResponse.asDomainModel()
+                if (listResult.isNotEmpty()) {
+                    _asteroids.value = listResult
+                    Timber.i("got ${listResult.size} items")
+                }
+            } catch (e: Exception) {
+                Timber.e("Failure getting Asteroid Properties: $e")
+                _status.value = AsteroidApiStatus.ERROR
+                _asteroids.value = ArrayList()
+            }
+        }
+
+    }
 }
+
