@@ -100,8 +100,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun filterAsteroids(type: Int) {
         when (type) {
             R.id.show_saved_menu -> {
-                Timber.i("saved asteroids: ${asteroidRepository.asteroids.value}")
-                _shownAsteroids.value = asteroidRepository.asteroids.value
+                showOnlyFiltered()
                 _headerText.value = "Saved"
             }
 
@@ -114,9 +113,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _shownAsteroids.value  = _asteroids.value
                 _headerText.value = "All"
             }
-
         }
+    }
 
+    private fun showOnlyFiltered(){
+        viewModelScope.launch{
+            _shownAsteroids.value = asteroidRepository.getAsteroids()
+        }
     }
 
 }

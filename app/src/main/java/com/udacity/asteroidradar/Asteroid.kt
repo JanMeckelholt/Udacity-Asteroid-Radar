@@ -23,6 +23,13 @@ data class Asteroid(
 
 fun Asteroid.asDatabaseModel(): DatabaseAsteroid {
     return DatabaseAsteroid(
-        id, codename, closeApproachDate, absoluteMagnitude, estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous
+        id,
+        codename,
+        closeApproachDate,
+        absoluteMagnitude,
+        estimatedDiameter,
+        relativeVelocity,
+        distanceFromEarth,
+        isPotentiallyHazardous
     )
 }

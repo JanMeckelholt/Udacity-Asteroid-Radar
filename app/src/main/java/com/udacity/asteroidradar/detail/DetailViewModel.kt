@@ -9,7 +9,6 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -17,9 +16,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private val asteroidRepository = AsteroidRepository(database)
     fun onSaveClicked(asteroid: Asteroid){
         viewModelScope.launch {
-            Timber.i("save clicked: $asteroid")
             asteroidRepository.insertAsteroid(asteroid)
-            Timber.i("inserted! Total: ${asteroidRepository.asteroids.value?.size}")
         }
     }
 
