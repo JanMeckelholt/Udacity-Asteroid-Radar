@@ -82,7 +82,7 @@ fun DataTransferObjects.ApiAsteroidsResponse.asDomainModel(): List<Asteroid> {
 
 fun DataTransferObjects.ApiIODResponse.asDomainModel(): String {
     //media Type can be video e.g. 26.02.2024
-    if (mediaType == "picture") {
+    if (mediaType == "image") {
         return this.url
     }
     //fallback if media-type is video
