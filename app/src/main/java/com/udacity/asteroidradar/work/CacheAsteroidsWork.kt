@@ -18,6 +18,7 @@ class CacheAsteroidsWork(appContext: Context, params: WorkerParameters):
         val database = getDatabase(applicationContext)
         val repository = AsteroidRepository(database)
         return try {
+            repository.cleanupOldAsteroids()
             repository.cacheAsteroids()
             Result.success()
         } catch (e: HttpException) {
