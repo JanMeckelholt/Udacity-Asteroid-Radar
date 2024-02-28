@@ -25,5 +25,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="refresh">Refresh</string>
+    <string name="api_error">Could not get Data from Nasa. Using only locally saved data.</string>
 
 </resources>

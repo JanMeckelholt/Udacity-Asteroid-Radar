@@ -81,6 +81,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         getDataFromNasa()
     }
 
+    fun doneShowingSnackBar() {
+        _status.value = AsteroidApiStatus.DONE
+    }
+
     private fun getDataFromNasa() {
         viewModelScope.launch {
             _status.value = AsteroidApiStatus.LOADING
