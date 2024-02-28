@@ -36,6 +36,12 @@ class DetailFragment : Fragment() {
 
         binding.asteroid = asteroid
         binding.viewModel = viewModel
+        if (asteroid.isPotentiallyHazardous) {
+            binding.activityMainImageOfTheDay.contentDescription = requireContext().getString(R.string.potentially_hazardous_asteroid_image)
+        } else {
+            binding.activityMainImageOfTheDay.contentDescription = requireContext().getString(R.string.not_hazardous_asteroid_image)
+        }
+
 
         binding.helpButton.setOnClickListener {
             displayAstronomicalUnitExplanationDialog()

@@ -26,5 +26,8 @@
     <string name="no">No</string>
     <string name="refresh">Refresh</string>
     <string name="api_error">Could not get Data from Nasa. Using only locally saved data.</string>
+    <string name="asteroid_image_of_the_day">Asteroid Image of the Day</string>
+    <string name="help_image">Help Image</string>
+    <string name="save_image">Save Image</string>
 
 </resources>
