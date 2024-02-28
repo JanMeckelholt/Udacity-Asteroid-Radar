@@ -49,6 +49,16 @@ class MainFragment : Fragment() {
             }
 
         })
+        viewModel.refreshButtonVisible.observe(viewLifecycleOwner, Observer {
+            if (it){
+                binding.btnRefreshAsteroids.visibility = View.VISIBLE
+                binding.btnRefreshAsteroids.isEnabled = true
+            } else {
+                binding.btnRefreshAsteroids.visibility = View.GONE
+                binding.btnRefreshAsteroids.isEnabled = false
+            }
+        })
+
         val menuHost : MenuHost = requireActivity()
         menuHost.addMenuProvider(OverflowMenu(viewModel), viewLifecycleOwner, Lifecycle.State.RESUMED)
 

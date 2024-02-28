@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -44,17 +45,33 @@
         </FrameLayout>
         <TextView
             android:id="@+id/title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/activity_main_image_of_the_day_layout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnRefreshAsteroids"
             android:text="@{viewModel.headerText}"
             android:textStyle="bold"
             android:textSize="@dimen/header_size_text"
             android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
-            android:textColor="@color/default_text_color"/>
+            android:gravity="start"
+            android:textColor="@color/default_text_color"
+            tools:text="All - 7 asteroids"
+            android:layout_marginBottom="20dp"/>
+        <Button
+            android:id="@+id/btnRefreshAsteroids"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title"
+            android:gravity="center"
+            android:drawablePadding="10dp"
+            android:onClick="@{()-> viewModel.onRefreshClicked()}"
+            android:text="@string/refresh"
+            android:background="@drawable/button_rounded"
+            android:paddingHorizontal="10dp"
+            android:drawableStart="@drawable/baseline_refresh_24"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asteroid_recycler"
@@ -67,7 +84,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            android:paddingTop="20dp"/>
 
         <ProgressBar
             android:id="@+id/status_loading_wheel"

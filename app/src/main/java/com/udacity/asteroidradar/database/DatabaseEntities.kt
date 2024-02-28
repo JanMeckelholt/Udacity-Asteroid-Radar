@@ -19,15 +19,19 @@ data class DatabaseAsteroid constructor(
 
 fun List<DatabaseAsteroid>.asDomainModel(): List<Asteroid> {
     return map {
-        Asteroid(
-            id = it.id,
-            codename = it.codename,
-            closeApproachDate = it.closeApproachDate,
-            absoluteMagnitude = it.absoluteMagnitude,
-            estimatedDiameter = it.estimatedDiameter,
-            relativeVelocity = it.relativeVelocity,
-            distanceFromEarth = it.distanceFromEarth,
-            isPotentiallyHazardous = it.isPotentiallyHazardous
-        )
+        it.asDomainModel()
     }
+}
+
+fun DatabaseAsteroid.asDomainModel(): Asteroid {
+    return Asteroid(
+        id = id,
+        codename = codename,
+        closeApproachDate = closeApproachDate,
+        absoluteMagnitude = absoluteMagnitude,
+        estimatedDiameter = estimatedDiameter,
+        relativeVelocity = relativeVelocity,
+        distanceFromEarth = distanceFromEarth,
+        isPotentiallyHazardous = isPotentiallyHazardous
+    )
 }

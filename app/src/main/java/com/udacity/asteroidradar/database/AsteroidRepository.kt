@@ -3,12 +3,10 @@ package com.udacity.asteroidradar.database
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.asDomainModel
-import com.udacity.asteroidradar.api.formatDate
-import com.udacity.asteroidradar.api.strToDate
+import com.udacity.asteroidradar.api.asteroidIsOldOrDateIsInvalid
 import com.udacity.asteroidradar.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Calendar
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 //    val asteroidsLivedata: LiveData<List<Asteroid>> = database.asteroidDao.getAsteroidsLiveData().map {
@@ -50,7 +48,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         withContext(Dispatchers.IO) {
             val asteroids = database.asteroidDao.getAsteroids()
             asteroids?.map { asteroid ->
-                if (strToDate(asteroid.closeApproachDate).before(strToDate(formatDate(Calendar.getInstance().time)))) {
+                if (asteroidIsOldOrDateIsInvalid(asteroid.asDomainModel())) {
                     database.asteroidDao.delete(asteroid)
                 }
             }
