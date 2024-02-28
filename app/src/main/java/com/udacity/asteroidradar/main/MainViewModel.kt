@@ -11,13 +11,11 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.asDomainModel
-import com.udacity.asteroidradar.api.formatDate
 import com.udacity.asteroidradar.database.getDatabase
-import com.udacity.asteroidradar.repository.AsteroidRepository
+import com.udacity.asteroidradar.database.AsteroidRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Exception
-import java.util.Calendar
 
 enum class AsteroidApiStatus { LOADING, ERROR, DONE }
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -71,11 +69,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 _status.value= AsteroidApiStatus.LOADING
-                val calendar = Calendar.getInstance()
-                val today = formatDate(calendar.time)
-                calendar.add(Calendar.DAY_OF_YEAR, 7)
-                val inSevenDays = formatDate(calendar.time)
-                val asteroidsResponse = AsteroidApi.retrofitService.getAsteroids(startDate = inSevenDays, endDate = today )
+                val asteroidsResponse = AsteroidApi.retrofitService.getAsteroidsForNextSevenDays()
                 val iodResponse = AsteroidApi.retrofitService.getIOD()
                 Timber.i("Asteroids Class: ${asteroidsResponse.javaClass}")
                 Timber.i("IOD Class: ${iodResponse.javaClass}")

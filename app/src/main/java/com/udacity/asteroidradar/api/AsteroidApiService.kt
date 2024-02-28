@@ -25,6 +25,12 @@ interface AsteroidApiService {
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String=Constants.NASA_API_KEY,
+    ): DataTransferObjects.ApiAsteroidsResponse    @GET(Constants.ASTEROID_PATH)
+
+    suspend fun getAsteroidsForNextSevenDays(
+        @Query("start_date") startDate: String = getFormatDateToday(),
+        @Query("end_date") endDate: String = getFormatDateInSevenDays(),
+        @Query("api_key") apiKey: String=Constants.NASA_API_KEY,
     ): DataTransferObjects.ApiAsteroidsResponse
 
     @GET(Constants.IOD_PATH)

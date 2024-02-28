@@ -50,6 +50,15 @@ fun formatDate(date : Date) : String {
     return dateFormat.format(date)
 }
 
+fun getFormatDateToday() : String {
+    return formatDate(Calendar.getInstance().time)
+}
+fun getFormatDateInSevenDays() : String {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_YEAR, 7)
+   return formatDate(calendar.time)
+}
+
 fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.database.getDatabase
-import com.udacity.asteroidradar.repository.AsteroidRepository
+import com.udacity.asteroidradar.database.AsteroidRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

@@ -1,9 +1,9 @@
-package com.udacity.asteroidradar.repository
+package com.udacity.asteroidradar.database
 
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.asDomainModel
 import com.udacity.asteroidradar.asDatabaseModel
-import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -30,6 +30,15 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     suspend fun deleteAsteroid(asteroid: Asteroid) {
         withContext(Dispatchers.IO) {
             database.asteroidDao.delete(asteroid.asDatabaseModel())
+        }
+    }
+
+    suspend fun cacheAsteroids() {
+        withContext(Dispatchers.IO) {
+            val asteroids = AsteroidApi.retrofitService.getAsteroidsForNextSevenDays()
+            asteroids.asDomainModel().map { asteroid ->
+                database.asteroidDao.insertAll(asteroid.asDatabaseModel())
+            }
         }
     }
 
