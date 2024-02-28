@@ -9,14 +9,14 @@ interface AsteroidDao {
     @Query("select * from databaseasteroid")
     fun getAsteroidsLiveData(): LiveData<List<DatabaseAsteroid>>
 
-    @Query("select * from databaseasteroid")
+    @Query("select * from databaseasteroid order by closeApproachDate, codename ASC")
     fun getAsteroids(): List<DatabaseAsteroid>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg asteroids: DatabaseAsteroid) : List<Long>
+    fun insertAll(vararg asteroids: DatabaseAsteroid)
+    @Delete
+    fun delete(asteroid: DatabaseAsteroid)
 
-    // @Insert(onConflict = OnConflictStrategy.REPLACE)
-    // fun insert(asteroid: DatabaseAsteroid)
 }
 
 

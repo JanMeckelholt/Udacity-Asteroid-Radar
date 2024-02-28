@@ -42,8 +42,10 @@ class MainFragment : Fragment() {
         viewModel.status.observe(viewLifecycleOwner, Observer {
             if (it == AsteroidApiStatus.LOADING) {
                 binding.statusLoadingWheel.visibility = View.VISIBLE
+                binding.asteroidRecycler.visibility = View.GONE
             } else {
                 binding.statusLoadingWheel.visibility = View.GONE
+                binding.asteroidRecycler.visibility = View.VISIBLE
             }
 
         })

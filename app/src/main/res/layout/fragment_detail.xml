@@ -8,6 +8,7 @@
         <variable
             name="asteroid"
             type="com.udacity.asteroidradar.Asteroid" />
+
         <variable
             name="viewModel"
             type="com.udacity.asteroidradar.detail.DetailViewModel" />
@@ -54,6 +55,55 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/name_title"
+                                    android:textColor="@color/default_text_color" />
+
+                                <TextView
+                                    android:id="@+id/name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="@{asteroid.codename}"
+                                    android:textColor="@color/default_text_color"
+                                    tools:text="(2015 AE44)" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvSavedStatus"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:textAlignment="textEnd"
+                                android:drawableRight="@drawable/baseline_done_24"
+                                android:drawableTint="@color/detail_saved"
+                                android:drawablePadding="16dp"
+                                android:paddingEnd="16dp"
+                                android:text="@string/saved_status_title"
+                                android:textColor="@color/detail_saved"
+                                android:visibility="invisible"
+                                tools:text="saved" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:orientation="vertical">
 
                             <TextView
@@ -163,12 +213,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnSaveAsteroid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/spacing_normal"
-            android:src="@drawable/baseline_save_24"
-            android:onClick="@{()->viewModel.onSaveClicked(asteroid)}"/>
+            android:onClick="@{()->viewModel.onSaveOrDeleteClicked()}"
+            android:src="@drawable/baseline_save_24" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
