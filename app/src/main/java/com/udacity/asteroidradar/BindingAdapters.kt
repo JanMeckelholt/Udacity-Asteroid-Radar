@@ -48,16 +48,21 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
 
-@BindingAdapter("imageUrl")
-fun bindImage(imageView: ImageView, imageOfDay: ImageOfDay?){
+@BindingAdapter("image")
+fun bindImage(imageView: ImageView, imageOfDay: ImageOfDay?) {
     imageOfDay?.let {
+        val pictureUrl: String
+        val title: String
         //media Type can be video e.g. 26.02.2024
-        val pictureUrl : String = if (it.mediaType == "image") {
-            it.url
+        if (it.mediaType == "image") {
+            pictureUrl = it.url
+            title = it.title
         } else {
             //fallback if media-type is video
-            "https://apod.nasa.gov/apod/image/2402/im-moon-imageFeb23_1024.jpg"
+            pictureUrl = "https://apod.nasa.gov/apod/image/2402/im-moon-imageFeb23_1024.jpg"
+            title = imageView.context.getString(R.string.nasa_picture_of_day_content_description_fall_back_title)
         }
+        imageView.contentDescription = imageView.context.getString(R.string.nasa_picture_of_day_content_description_format, title)
         val imgUri = pictureUrl
             .toUri()
             .buildUpon()
@@ -71,7 +76,7 @@ fun bindImage(imageView: ImageView, imageOfDay: ImageOfDay?){
 }
 
 @BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?){
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidListAdatper
     adapter.submitList(data)
 }
