@@ -106,8 +106,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun appendAsteroidsFromApi(listResult: ArrayList<Asteroid>): AsteroidApiStatus {
         try {
             val asteroidsFromApi = AsteroidApi.retrofitService.getAsteroidsForNextSevenDays().asDomainModel()
-            Timber.i("Added ${asteroidsFromApi.size} asteroids from api (may overwrite DB-Asteroids)")
-            listResult += asteroidsFromApi
+            Timber.i("Adding ${asteroidsFromApi.size} asteroids from api (may overwrite DB-Asteroids)")
+            asteroidsFromApi.map { asteroidFromApi ->
+                val duplicateAsteroidList = listResult.filter { it.id == asteroidFromApi.id }
+                if (duplicateAsteroidList.isNotEmpty()) {
+                    val index = listResult.indexOf(duplicateAsteroidList[0])
+                    listResult[index] = asteroidFromApi
+                } else {
+                    listResult += asteroidFromApi
+                }
+            }
+            listResult.sortBy { it.closeApproachDate }
             return AsteroidApiStatus.DONE
         } catch (e: Exception) {
             Timber.e("Failure getting Asteroid from Api: $e")
