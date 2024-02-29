@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Constants
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -15,28 +16,35 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
-
     .baseUrl(Constants.NASA_BASE_URL)
-    .build()
+    .client(
+        OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val url = chain
+                    .request()
+                    .url()
+                    .newBuilder()
+                    .addQueryParameter("api_key", Constants.NASA_API_KEY)
+                    .build()
+                chain.proceed(chain.request().newBuilder().url(url).build())
+            }.build()
+    ).build()
 
 interface AsteroidApiService {
     @GET(Constants.ASTEROID_PATH)
     suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
-        @Query("api_key") apiKey: String=Constants.NASA_API_KEY,
-    ): DataTransferObjects.ApiAsteroidsResponse    @GET(Constants.ASTEROID_PATH)
+    ): DataTransferObjects.ApiAsteroidsResponse
 
+    @GET(Constants.ASTEROID_PATH)
     suspend fun getAsteroidsForNextSevenDays(
         @Query("start_date") startDate: String = getFormatDateToday(),
         @Query("end_date") endDate: String = getFormatDateInSevenDays(),
-        @Query("api_key") apiKey: String=Constants.NASA_API_KEY,
     ): DataTransferObjects.ApiAsteroidsResponse
 
     @GET(Constants.IOD_PATH)
-    suspend fun getIOD(
-        @Query("api_key") apiKey: String=Constants.NASA_API_KEY,
-    ): DataTransferObjects.ApiIODResponse
+    suspend fun getIOD(): DataTransferObjects.ApiIODResponse
 }
 
 object AsteroidApi {

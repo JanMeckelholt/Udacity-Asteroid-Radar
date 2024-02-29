@@ -9,12 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
-//    val asteroidsLivedata: LiveData<List<Asteroid>> = database.asteroidDao.getAsteroidsLiveData().map {
-//        it.asDomainModel()
-//    }
-
-
-    //val asteroids: List<Asteroid>? = database.asteroidDao.getAsteroids()?.asDomainModel()
 
     suspend fun getAsteroids(): List<Asteroid>? {
         return withContext(Dispatchers.IO) {
