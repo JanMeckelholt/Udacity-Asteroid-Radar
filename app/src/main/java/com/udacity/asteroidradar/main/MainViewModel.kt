@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.ImageOfDay
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.asDomainModel
@@ -59,8 +60,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val shownAsteroids: LiveData<List<Asteroid>?>
         get() = _shownAsteroids
 
-    private val _iod = MutableLiveData<String?>()
-    val iod: LiveData<String?>
+    private val _iod = MutableLiveData<ImageOfDay?>()
+    val iod: LiveData<ImageOfDay?>
         get() = _iod
 
     init {

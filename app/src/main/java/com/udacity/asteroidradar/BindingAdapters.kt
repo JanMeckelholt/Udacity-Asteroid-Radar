@@ -12,8 +12,10 @@ import com.udacity.asteroidradar.main.AsteroidListAdatper
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_icon)
     } else {
         imageView.setImageResource(R.drawable.ic_status_normal)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_icon)
     }
 }
 
@@ -21,8 +23,10 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
         imageView.setImageResource(R.drawable.asteroid_hazardous)
+        imageView.contentDescription = imageView.context.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
         imageView.setImageResource(R.drawable.asteroid_safe)
+        imageView.contentDescription = imageView.context.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
@@ -45,17 +49,24 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 }
 
 @BindingAdapter("imageUrl")
-fun bindImage(imgView: ImageView, imgUrl: String?){
-    imgUrl?.let {
-        val imgUri = it
+fun bindImage(imageView: ImageView, imageOfDay: ImageOfDay?){
+    imageOfDay?.let {
+        //media Type can be video e.g. 26.02.2024
+        val pictureUrl : String = if (it.mediaType == "image") {
+            it.url
+        } else {
+            //fallback if media-type is video
+            "https://apod.nasa.gov/apod/image/2402/im-moon-imageFeb23_1024.jpg"
+        }
+        val imgUri = pictureUrl
             .toUri()
             .buildUpon()
             .scheme("https")
             .build()
-        Picasso.with(imgView.context)
+        Picasso.with(imageView.context)
             .load(imgUri)
             .placeholder(R.drawable.placeholder_picture_of_day)
-            .into(imgView)
+            .into(imageView)
     }
 }
 

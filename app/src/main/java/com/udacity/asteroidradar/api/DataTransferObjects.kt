@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.api
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.ImageOfDay
 
 class DataTransferObjects {
 
@@ -49,7 +50,7 @@ class DataTransferObjects {
     )
 
     @JsonClass(generateAdapter = true)
-    data class ApiIODResponse(val url: String, @Json(name="media_type") val mediaType: String)
+    data class ApiIODResponse(val title: String, val url: String, @Json(name="media_type") val mediaType: String)
 }
 
 fun DataTransferObjects.ApiAsteroidsResponse.asDomainModel(): List<Asteroid> {
@@ -80,11 +81,10 @@ fun DataTransferObjects.ApiAsteroidsResponse.asDomainModel(): List<Asteroid> {
     return asteroidList
 }
 
-fun DataTransferObjects.ApiIODResponse.asDomainModel(): String {
-    //media Type can be video e.g. 26.02.2024
-    if (mediaType == "image") {
-        return this.url
-    }
-    //fallback if media-type is video
-    return "https://apod.nasa.gov/apod/image/2402/im-moon-imageFeb23_1024.jpg"
+fun DataTransferObjects.ApiIODResponse.asDomainModel(): ImageOfDay {
+    return ImageOfDay(
+        title = title,
+        url = url,
+        mediaType = mediaType
+    )
 }
